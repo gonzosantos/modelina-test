@@ -1,0 +1,963 @@
+{
+  "version": "0.40.4",
+  "commands": {
+    "bundle": {
+      "id": "bundle",
+      "description": "bundle one or multiple asyncapi documents and their references together.",
+      "strict": false,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "examples": [
+        "asyncapi bundle ./asyncapi.yaml > final-asyncapi.yaml",
+        "asyncapi bundle ./asyncapi.yaml --output final-asyncapi.yaml",
+        "asyncapi bundle ./asyncapi.yaml ./features.yaml --reference-into-components",
+        "asyncapi bundle ./asyncapi.yaml ./features.yaml --base ./asyncapi.yaml --reference-into-components"
+      ],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "Show CLI help.",
+          "allowNo": false
+        },
+        "output": {
+          "name": "output",
+          "type": "option",
+          "char": "o",
+          "description": "The output file name. Omitting this flag the result will be printed in the console.",
+          "multiple": false
+        },
+        "reference-into-components": {
+          "name": "reference-into-components",
+          "type": "boolean",
+          "char": "r",
+          "description": "Bundle the message $refs into components object.",
+          "allowNo": false
+        },
+        "base": {
+          "name": "base",
+          "type": "option",
+          "char": "b",
+          "description": "Path to the file which will act as a base. This is required when some properties are to needed to be overwritten.",
+          "multiple": false
+        }
+      },
+      "args": {}
+    },
+    "convert": {
+      "id": "convert",
+      "description": "Convert asyncapi documents older to newer versions",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "Show CLI help.",
+          "allowNo": false
+        },
+        "output": {
+          "name": "output",
+          "type": "option",
+          "char": "o",
+          "description": "path to the file where the result is saved",
+          "multiple": false
+        },
+        "target-version": {
+          "name": "target-version",
+          "type": "option",
+          "char": "t",
+          "description": "asyncapi version to convert to",
+          "multiple": false,
+          "default": "2.6.0"
+        }
+      },
+      "args": {
+        "spec-file": {
+          "name": "spec-file",
+          "description": "spec path, url, or context-name",
+          "required": false
+        }
+      }
+    },
+    "diff": {
+      "id": "diff",
+      "description": "Find diff between two asyncapi files",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "Show CLI help.",
+          "allowNo": false
+        },
+        "format": {
+          "name": "format",
+          "type": "option",
+          "char": "f",
+          "description": "format of the output",
+          "multiple": false,
+          "options": [
+            "json",
+            "yaml",
+            "yml"
+          ],
+          "default": "yaml"
+        },
+        "type": {
+          "name": "type",
+          "type": "option",
+          "char": "t",
+          "description": "type of the output",
+          "multiple": false,
+          "options": [
+            "breaking",
+            "non-breaking",
+            "unclassified",
+            "all"
+          ],
+          "default": "all"
+        },
+        "overrides": {
+          "name": "overrides",
+          "type": "option",
+          "char": "o",
+          "description": "path to JSON file containing the override properties",
+          "multiple": false
+        },
+        "watch": {
+          "name": "watch",
+          "type": "boolean",
+          "char": "w",
+          "description": "Enable watch mode",
+          "allowNo": false
+        },
+        "log-diagnostics": {
+          "name": "log-diagnostics",
+          "type": "boolean",
+          "description": "log validation diagnostics or not",
+          "allowNo": true
+        },
+        "diagnostics-format": {
+          "name": "diagnostics-format",
+          "type": "option",
+          "description": "format to use for validation diagnostics",
+          "helpValue": "(json|stylish|junit|html|text|teamcity|pretty)",
+          "multiple": false,
+          "options": [
+            "json",
+            "stylish",
+            "junit",
+            "html",
+            "text",
+            "teamcity",
+            "pretty"
+          ],
+          "default": "stylish"
+        },
+        "fail-severity": {
+          "name": "fail-severity",
+          "type": "option",
+          "description": "diagnostics of this level or above will trigger a failure exit code",
+          "helpValue": "(error|warn|info|hint)",
+          "multiple": false,
+          "options": [
+            "error",
+            "warn",
+            "info",
+            "hint"
+          ],
+          "default": "error"
+        }
+      },
+      "args": {
+        "old": {
+          "name": "old",
+          "description": "old spec path, URL or context-name",
+          "required": true
+        },
+        "new": {
+          "name": "new",
+          "description": "new spec path, URL or context-name",
+          "required": true
+        }
+      }
+    },
+    "optimize": {
+      "id": "optimize",
+      "description": "optimize asyncapi specification file",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "examples": [
+        "asyncapi optimize ./asyncapi.yaml",
+        "asyncapi optimize ./asyncapi.yaml --no-tty",
+        "asyncapi optimize ./asyncapi.yaml --optimization=remove-components,reuse-components,move-to-components --no-tty",
+        "asyncapi optimize ./asyncapi.yaml --optimization=remove-components,reuse-components,move-to-components --output=terminal --no-tty"
+      ],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "Show CLI help.",
+          "allowNo": false
+        },
+        "optimization": {
+          "name": "optimization",
+          "type": "option",
+          "char": "p",
+          "description": "select the type of optimizations that you want to apply.",
+          "multiple": true,
+          "options": [
+            "remove-components",
+            "reuse-components",
+            "move-to-components"
+          ],
+          "default": [
+            "remove-components",
+            "reuse-components",
+            "move-to-components"
+          ]
+        },
+        "output": {
+          "name": "output",
+          "type": "option",
+          "char": "o",
+          "description": "select where you want the output.",
+          "multiple": false,
+          "options": [
+            "terminal",
+            "new-file",
+            "overwrite"
+          ],
+          "default": "terminal"
+        },
+        "no-tty": {
+          "name": "no-tty",
+          "type": "boolean",
+          "description": "do not use an interactive terminal",
+          "allowNo": false
+        }
+      },
+      "args": {
+        "spec-file": {
+          "name": "spec-file",
+          "description": "spec path, url, or context-name",
+          "required": false
+        }
+      }
+    },
+    "validate": {
+      "id": "validate",
+      "description": "validate asyncapi file",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "Show CLI help.",
+          "allowNo": false
+        },
+        "watch": {
+          "name": "watch",
+          "type": "boolean",
+          "char": "w",
+          "description": "Enable watch mode",
+          "allowNo": false
+        },
+        "log-diagnostics": {
+          "name": "log-diagnostics",
+          "type": "boolean",
+          "description": "log validation diagnostics or not",
+          "allowNo": true
+        },
+        "diagnostics-format": {
+          "name": "diagnostics-format",
+          "type": "option",
+          "description": "format to use for validation diagnostics",
+          "helpValue": "(json|stylish|junit|html|text|teamcity|pretty)",
+          "multiple": false,
+          "options": [
+            "json",
+            "stylish",
+            "junit",
+            "html",
+            "text",
+            "teamcity",
+            "pretty"
+          ],
+          "default": "stylish"
+        },
+        "fail-severity": {
+          "name": "fail-severity",
+          "type": "option",
+          "description": "diagnostics of this level or above will trigger a failure exit code",
+          "helpValue": "(error|warn|info|hint)",
+          "multiple": false,
+          "options": [
+            "error",
+            "warn",
+            "info",
+            "hint"
+          ],
+          "default": "error"
+        }
+      },
+      "args": {
+        "spec-file": {
+          "name": "spec-file",
+          "description": "spec path, url, or context-name",
+          "required": false
+        }
+      }
+    },
+    "config": {
+      "id": "config",
+      "description": "CLI config settings",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {},
+      "args": {}
+    },
+    "generate:fromTemplate": {
+      "id": "generate:fromTemplate",
+      "description": "Generates whatever you want using templates compatible with AsyncAPI Generator.",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "examples": [
+        "asyncapi generate fromTemplate asyncapi.yaml @asyncapi/html-template --param version=1.0.0 singleFile=true --output ./docs --force-write"
+      ],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "Show CLI help.",
+          "allowNo": false
+        },
+        "disable-hook": {
+          "name": "disable-hook",
+          "type": "option",
+          "char": "d",
+          "description": "Disable a specific hook type or hooks from a given hook type",
+          "multiple": true
+        },
+        "install": {
+          "name": "install",
+          "type": "boolean",
+          "char": "i",
+          "description": "Installs the template and its dependencies (defaults to false)",
+          "allowNo": false
+        },
+        "debug": {
+          "name": "debug",
+          "type": "boolean",
+          "description": "Enable more specific errors in the console",
+          "allowNo": false
+        },
+        "no-overwrite": {
+          "name": "no-overwrite",
+          "type": "option",
+          "char": "n",
+          "description": "Glob or path of the file(s) to skip when regenerating",
+          "multiple": true
+        },
+        "output": {
+          "name": "output",
+          "type": "option",
+          "char": "o",
+          "description": "Directory where to put the generated files (defaults to current directory)",
+          "multiple": false
+        },
+        "force-write": {
+          "name": "force-write",
+          "type": "boolean",
+          "description": "Force writing of the generated files to given directory even if it is a git repo with unstaged files or not empty dir (defaults to false)",
+          "allowNo": false
+        },
+        "watch": {
+          "name": "watch",
+          "type": "boolean",
+          "char": "w",
+          "description": "Watches the template directory and the AsyncAPI document, and re-generate the files when changes occur. Ignores the output directory.",
+          "allowNo": false
+        },
+        "param": {
+          "name": "param",
+          "type": "option",
+          "char": "p",
+          "description": "Additional param to pass to templates",
+          "multiple": true
+        },
+        "map-base-url": {
+          "name": "map-base-url",
+          "type": "option",
+          "description": "Maps all schema references from base url to local folder",
+          "multiple": false
+        }
+      },
+      "args": {
+        "asyncapi": {
+          "name": "asyncapi",
+          "description": "- Local path, url or context-name pointing to AsyncAPI file",
+          "required": true
+        },
+        "template": {
+          "name": "template",
+          "description": "- Name of the generator template like for example @asyncapi/html-template or https://github.com/asyncapi/html-template",
+          "required": true
+        }
+      }
+    },
+    "generate": {
+      "id": "generate",
+      "description": "Generate typed models or other things like clients, applications or docs using AsyncAPI Generator templates.",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {},
+      "args": {}
+    },
+    "generate:models": {
+      "id": "generate:models",
+      "description": "Generates typed models",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "Show CLI help.",
+          "allowNo": false
+        },
+        "output": {
+          "name": "output",
+          "type": "option",
+          "char": "o",
+          "description": "The output directory where the models should be written to. Omitting this flag will write the models to `stdout`.",
+          "required": false,
+          "multiple": false
+        },
+        "tsModelType": {
+          "name": "tsModelType",
+          "type": "option",
+          "description": "TypeScript specific, define which type of model needs to be generated.",
+          "required": false,
+          "multiple": false,
+          "options": [
+            "class",
+            "interface"
+          ],
+          "default": "class"
+        },
+        "tsEnumType": {
+          "name": "tsEnumType",
+          "type": "option",
+          "description": "TypeScript specific, define which type of enums needs to be generated.",
+          "required": false,
+          "multiple": false,
+          "options": [
+            "enum",
+            "union"
+          ],
+          "default": "enum"
+        },
+        "tsModuleSystem": {
+          "name": "tsModuleSystem",
+          "type": "option",
+          "description": "TypeScript specific, define the module system to be used.",
+          "required": false,
+          "multiple": false,
+          "options": [
+            "ESM",
+            "CJS"
+          ],
+          "default": "ESM"
+        },
+        "tsIncludeComments": {
+          "name": "tsIncludeComments",
+          "type": "boolean",
+          "description": "TypeScript specific, if enabled add comments while generating models.",
+          "required": false,
+          "allowNo": false
+        },
+        "tsExportType": {
+          "name": "tsExportType",
+          "type": "option",
+          "description": "TypeScript specific, define which type of export needs to be generated.",
+          "required": false,
+          "multiple": false,
+          "options": [
+            "default",
+            "named"
+          ],
+          "default": "default"
+        },
+        "tsJsonBinPack": {
+          "name": "tsJsonBinPack",
+          "type": "boolean",
+          "description": "TypeScript specific, define basic support for serializing to and from binary with jsonbinpack.",
+          "required": false,
+          "allowNo": false
+        },
+        "packageName": {
+          "name": "packageName",
+          "type": "option",
+          "description": "Go, Java and Kotlin specific, define the package to use for the generated models. This is required when language is `go`, `java` or `kotlin`.",
+          "required": false,
+          "multiple": false
+        },
+        "namespace": {
+          "name": "namespace",
+          "type": "option",
+          "description": "C# specific, define the namespace to use for the generated models. This is required when language is `csharp`.",
+          "required": false,
+          "multiple": false
+        },
+        "csharpAutoImplement": {
+          "name": "csharpAutoImplement",
+          "type": "boolean",
+          "description": "C# specific, define whether to generate auto-implemented properties or not.",
+          "required": false,
+          "allowNo": false
+        },
+        "csharpArrayType": {
+          "name": "csharpArrayType",
+          "type": "option",
+          "description": "C# specific, define which type of array needs to be generated.",
+          "required": false,
+          "multiple": false,
+          "options": [
+            "Array",
+            "List"
+          ],
+          "default": "Array"
+        },
+        "log-diagnostics": {
+          "name": "log-diagnostics",
+          "type": "boolean",
+          "description": "log validation diagnostics or not",
+          "allowNo": true
+        },
+        "diagnostics-format": {
+          "name": "diagnostics-format",
+          "type": "option",
+          "description": "format to use for validation diagnostics",
+          "helpValue": "(json|stylish|junit|html|text|teamcity|pretty)",
+          "multiple": false,
+          "options": [
+            "json",
+            "stylish",
+            "junit",
+            "html",
+            "text",
+            "teamcity",
+            "pretty"
+          ],
+          "default": "stylish"
+        },
+        "fail-severity": {
+          "name": "fail-severity",
+          "type": "option",
+          "description": "diagnostics of this level or above will trigger a failure exit code",
+          "helpValue": "(error|warn|info|hint)",
+          "multiple": false,
+          "options": [
+            "error",
+            "warn",
+            "info",
+            "hint"
+          ],
+          "default": "error"
+        }
+      },
+      "args": {
+        "language": {
+          "name": "language",
+          "description": "The language you want the typed models generated for.",
+          "required": true,
+          "options": [
+            "typescript",
+            "csharp",
+            "golang",
+            "java",
+            "javascript",
+            "dart",
+            "python",
+            "rust",
+            "kotlin"
+          ]
+        },
+        "file": {
+          "name": "file",
+          "description": "Path or URL to the AsyncAPI document, or context-name",
+          "required": true
+        }
+      }
+    },
+    "new:file": {
+      "id": "new:file",
+      "description": "Creates a new asyncapi file",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "Show CLI help.",
+          "allowNo": false
+        },
+        "file-name": {
+          "name": "file-name",
+          "type": "option",
+          "char": "n",
+          "description": "name of the file",
+          "multiple": false
+        },
+        "example": {
+          "name": "example",
+          "type": "option",
+          "char": "e",
+          "description": "name of the example to use",
+          "multiple": false
+        },
+        "studio": {
+          "name": "studio",
+          "type": "boolean",
+          "char": "s",
+          "description": "open in Studio",
+          "allowNo": false
+        },
+        "port": {
+          "name": "port",
+          "type": "option",
+          "char": "p",
+          "description": "port in which to start Studio",
+          "multiple": false
+        },
+        "no-tty": {
+          "name": "no-tty",
+          "type": "boolean",
+          "description": "do not use an interactive terminal",
+          "allowNo": false
+        }
+      },
+      "args": {}
+    },
+    "new:glee": {
+      "id": "new:glee",
+      "description": "Creates a new Glee project",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "Show CLI help.",
+          "allowNo": false
+        },
+        "name": {
+          "name": "name",
+          "type": "option",
+          "char": "n",
+          "description": "name of the project",
+          "multiple": false,
+          "default": "project"
+        }
+      },
+      "args": {}
+    },
+    "new": {
+      "id": "new",
+      "description": "Creates a new asyncapi file",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "Show CLI help.",
+          "allowNo": false
+        },
+        "file-name": {
+          "name": "file-name",
+          "type": "option",
+          "char": "n",
+          "description": "name of the file",
+          "multiple": false
+        },
+        "example": {
+          "name": "example",
+          "type": "option",
+          "char": "e",
+          "description": "name of the example to use",
+          "multiple": false
+        },
+        "studio": {
+          "name": "studio",
+          "type": "boolean",
+          "char": "s",
+          "description": "open in Studio",
+          "allowNo": false
+        },
+        "port": {
+          "name": "port",
+          "type": "option",
+          "char": "p",
+          "description": "port in which to start Studio",
+          "multiple": false
+        },
+        "no-tty": {
+          "name": "no-tty",
+          "type": "boolean",
+          "description": "do not use an interactive terminal",
+          "allowNo": false
+        }
+      },
+      "args": {}
+    },
+    "new:project": {
+      "id": "new:project",
+      "description": "Creates a new Glee project",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "Show CLI help.",
+          "allowNo": false
+        },
+        "name": {
+          "name": "name",
+          "type": "option",
+          "char": "n",
+          "description": "name of the project",
+          "multiple": false,
+          "default": "project"
+        }
+      },
+      "args": {}
+    },
+    "start": {
+      "id": "start",
+      "description": "Start asyncapi studio",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {},
+      "args": {}
+    },
+    "start:studio": {
+      "id": "start:studio",
+      "description": "starts a new local instance of Studio",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "Show CLI help.",
+          "allowNo": false
+        },
+        "file": {
+          "name": "file",
+          "type": "option",
+          "char": "f",
+          "description": "path to the AsyncAPI file to link with Studio",
+          "multiple": false
+        },
+        "port": {
+          "name": "port",
+          "type": "option",
+          "char": "p",
+          "description": "port in which to start Studio",
+          "multiple": false
+        }
+      },
+      "args": {}
+    },
+    "config:context:add": {
+      "id": "config:context:add",
+      "description": "Add or modify a context in the store",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "Show CLI help.",
+          "allowNo": false
+        }
+      },
+      "args": {
+        "context-name": {
+          "name": "context-name",
+          "description": "context name",
+          "required": true
+        },
+        "spec-file-path": {
+          "name": "spec-file-path",
+          "description": "file path of the spec file",
+          "required": true
+        }
+      }
+    },
+    "config:context:current": {
+      "id": "config:context:current",
+      "description": "Shows the current context that is being used",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "Show CLI help.",
+          "allowNo": false
+        }
+      },
+      "args": {}
+    },
+    "config:context": {
+      "id": "config:context",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {},
+      "args": {}
+    },
+    "config:context:list": {
+      "id": "config:context:list",
+      "description": "List all the stored context in the store",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "Show CLI help.",
+          "allowNo": false
+        }
+      },
+      "args": {}
+    },
+    "config:context:remove": {
+      "id": "config:context:remove",
+      "description": "Delete a context from the store",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "Show CLI help.",
+          "allowNo": false
+        }
+      },
+      "args": {
+        "context-name": {
+          "name": "context-name",
+          "description": "Name of the context to delete",
+          "required": true
+        }
+      }
+    },
+    "config:context:use": {
+      "id": "config:context:use",
+      "description": "Set a context as current",
+      "strict": true,
+      "pluginName": "@asyncapi/cli",
+      "pluginAlias": "@asyncapi/cli",
+      "pluginType": "core",
+      "aliases": [],
+      "flags": {
+        "help": {
+          "name": "help",
+          "type": "boolean",
+          "char": "h",
+          "description": "Show CLI help.",
+          "allowNo": false
+        }
+      },
+      "args": {
+        "context-name": {
+          "name": "context-name",
+          "description": "name of the saved context",
+          "required": true
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,70 @@
+[
+    {
+        "name": "Account Service",
+        "value": "simple.yml"
+    },
+    {
+        "name": "AnyOf example",
+        "value": "anyof.yml"
+    },
+    {
+        "name": "Application Headers example - (protocols: mqtt)",
+        "value": "application-headers.yml"
+    },
+    {
+        "name": "Correlation ID Example - (protocols: mqtt)",
+        "value": "correlation-id.yml"
+    },
+    {
+        "name": "Gemini Market Data Websocket API - (protocols: wss)",
+        "value": "websocket-gemini.yml"
+    },
+    {
+        "name": "Gitter Streaming API - (protocols: https)",
+        "value": "gitter-streaming.yml"
+    },
+    {
+        "name": "Mercure Hub Example - (protocols: mercure)",
+        "value": "mercure.yml"
+    },
+    {
+        "name": "Not example",
+        "value": "not.yml"
+    },
+    {
+        "name": "Notifications",
+        "value": "operation-security.yml"
+    },
+    {
+        "name": "OneOf example",
+        "value": "oneof.yml"
+    },
+    {
+        "name": "RPC Client Example - (protocols: amqp)",
+        "value": "rpc-client.yml"
+    },
+    {
+        "name": "RPC Server Example - (protocols: amqp)",
+        "value": "rpc-server.yml"
+    },
+    {
+        "name": "Slack Real Time Messaging API - (protocols: https)",
+        "value": "slack-rtm.yml"
+    },
+    {
+        "name": "Streetlights API Simplified - (protocols: mqtt)",
+        "value": "tutorial.yml"
+    },
+    {
+        "name": "Streetlights Kafka API - (protocols: kafka-secure,kafka-secure)",
+        "value": "streetlights-kafka.yml"
+    },
+    {
+        "name": "Streetlights Kafka API - (protocols: kafka-secure,kafka-secure)",
+        "value": "streetlights-operation-security.yml"
+    },
+    {
+        "name": "Streetlights MQTT API - (protocols: mqtt)",
+        "value": "streetlights-mqtt.yml"
+    }
+]
