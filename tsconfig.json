@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "outDir": "./lib/cjs",
+    "baseUrl": "./src",
+    "declaration": false,
+    "target": "es6",
+    "lib": [
+      "esnext"
+    ],
+    "sourceMap": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "src/**/*.ts",
+  ],
+  "exclude": ["node_modules", "lib", "examples", "src/generator/template", "src/processors/TemplateInputProcessor", "modelina-website"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  }
+}
